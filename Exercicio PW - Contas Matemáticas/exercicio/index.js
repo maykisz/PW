@@ -1,6 +1,7 @@
 import express from 'express'
 import { ex1 } from './ex1.js'
 import { ex2 } from './ex2.js'
+import { ex3 } from './ex3.js'
 
 const router = express.Router()
 
@@ -9,7 +10,9 @@ let estado = {
     resultado1: "",
     respondido1: false,
     resultado2: "",
-    respondido2: false
+    respondido2: false,
+    resultado3: "",
+    respondido3: false
 }
 
 router.get('/', (req, res) => {
@@ -52,8 +55,25 @@ router.post('/', (req, res) => {
         }
     }
 
+    if (req.body.exercicio === "3") {
+        
+        const resposta = req.body.resp3
+        estado.respondido3 = true
+
+        if (!resposta) {
+            estado.resultado3 = "Escolha uma alternativa."
+            estado.respondido3 = false
+        }
+        else if (resposta === "9") {
+            estado.resultado3 = "Correto."
+        }
+        else {
+            estado.resultado3 = "Errado."
+        }
+    }
     res.send(pagina())
 })
+
 
 function pagina() {
     return `
@@ -62,6 +82,9 @@ function pagina() {
             ${ex1(estado.resultado1, estado.respondido1)}
             <hr>
             ${ex2(estado.resultado2, estado.respondido2)}
+            <hr>
+            ${ex3(estado.resultado3, estado.respondido3)}
+            <hr>
         </body>
         </html>
     `
