@@ -2,6 +2,8 @@ import express from 'express'
 import { ex1 } from './ex1.js'
 import { ex2 } from './ex2.js'
 import { ex3 } from './ex3.js'
+import { ex4 } from './ex4.js'
+import { ex5 } from './ex5.js'
 
 const router = express.Router()
 
@@ -12,7 +14,11 @@ let estado = {
     resultado2: "",
     respondido2: false,
     resultado3: "",
-    respondido3: false
+    respondido3: false,
+    resultado4: "",
+    respondido4: false,
+    resultado5: "",
+    respondido5: false
 }
 
 router.get('/', (req, res) => {
@@ -71,6 +77,41 @@ router.post('/', (req, res) => {
             estado.resultado3 = "Errado."
         }
     }
+
+    if (req.body.exercicio === "4") {
+        
+        const resposta = req.body.resp4
+        estado.respondido4 = true
+
+        if (!resposta) {
+            estado.resultado4 = "Escolha uma alternativa."
+            estado.respondido4 = false
+        }
+        else if (resposta === "12") {
+            estado.resultado4 = "Correto."
+        } 
+        else {
+            estado.resultado4 = "Errado."
+        }
+    }
+
+    if (req.body.exercicio === "5") {
+        
+        const resposta = req.body.resp5
+        estado.respondido5 = true
+
+        if (!resposta) {
+            estado.resultado5 = "Escolha uma alternativa."
+            estado.respondido5 = false
+        } 
+        else if (resposta === "14") {
+            estado.resultado5 = "Correto."
+        } 
+        else {
+            estado.resultado5 = "Errado."
+        }
+    }
+
     res.send(pagina())
 })
 
@@ -85,6 +126,9 @@ function pagina() {
             <hr>
             ${ex3(estado.resultado3, estado.respondido3)}
             <hr>
+            ${ex4(estado.resultado4, estado.respondido4)}
+            <hr>
+            ${ex5(estado.resultado5, estado.respondido5)}
         </body>
         </html>
     `
